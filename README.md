@@ -1,19 +1,14 @@
-# cloud-platform-terraform-_template_
+# cloud-platform-terraform-cloudfront
 
-_note: Please remove all comments in italics and fill where required>_
+[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-cloudfront/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-cloudfront/releases)
 
-_Please change the urls in the release badge below_
-[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-template/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-template/releases)
-
-_Short describion of the module_
-_This Terraform module ......_
+A Terraform module to create a CloudFront distribution, allowing you to put data held in S3 behind a CDN.
 
 ## Usage
 
-_Describe how to use the module_
 See the [examples/](examples/) folder.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -45,7 +40,7 @@ No inputs.
 
 No outputs.
 
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->
 
 ## Tags
 
@@ -59,8 +54,7 @@ Some of the inputs are tags. All infrastructure resources need to be tagged acco
 | infrastructure-support | The team responsible for managing the infrastructure. Should be of the form team-email | string | - | yes |
 | is-production |  | string | `false` | yes |
 | team_name |  | string | - | yes |
-| sqs_name |  | string | - | yes |
 
 ## Reading Material
 
-_add link to external source_
+- [CloudFront documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
