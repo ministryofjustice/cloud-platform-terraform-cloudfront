@@ -13,7 +13,7 @@ _This Terraform module ......_
 _Describe how to use the module_
 See the [examples/](examples/) folder.
 
-<!--- BEGIN_TF_DOCS --->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -44,8 +44,7 @@ No inputs.
 ## Outputs
 
 No outputs.
-
-<!--- END_TF_DOCS --->
+<!-- END_TF_DOCS -->
 
 ## Tags
 
