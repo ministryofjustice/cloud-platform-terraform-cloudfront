@@ -1,9 +1,3 @@
 provider "aws" {
-  region  = "eu-west-2"
-  profile = "moj-cp"
-}
-
-module "template" {
-  source = "../"
-
+  region = "eu-west-2"
 }
