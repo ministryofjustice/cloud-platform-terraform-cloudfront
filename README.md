@@ -1,6 +1,6 @@
 # cloud-platform-terraform-cloudfront
 
-[![Releases](https://img.shields.io/github/release/ministryofjustice/cloud-platform-terraform-cloudfront/all.svg?style=flat-square)](https://github.com/ministryofjustice/cloud-platform-terraform-cloudfront/releases)
+[![Releases](https://img.shields.io/github/v/release/ministryofjustice/cloud-platform-terraform-cloudfront.svg)](https://github.com/ministryofjustice/cloud-platform-terraform-cloudfront/releases)
 
 This Terraform module will create an [Amazon CloudFront](https://aws.amazon.com/cloudfront/) distribution to use with an S3 origin for use on the Cloud Platform.
 
@@ -91,4 +91,4 @@ You should use your namespace variables to populate these. See the [Usage](#usag
 ## Reading Material
 
 - [Cloud Platform user guide](https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide)
-- [CloudFront documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
+- [Amazon CloudFront developer guide](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html)
