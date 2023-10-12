@@ -35,6 +35,12 @@ variable "price_class" {
   default     = "PriceClass_All"
 }
 
+variable "ip_allow_listing_environment" {
+  type        = string
+  default     = null
+  description = "[Prisoner Content Hub only]: specify the environment name to restrict CloudFront to a preset IP allow-list, either `development`, `staging`, `production`. Leave empty for unrestricted access."
+}
+
 ########
 # Tags #
 ########

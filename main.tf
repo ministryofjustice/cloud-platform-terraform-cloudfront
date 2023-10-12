@@ -24,6 +24,14 @@ resource "random_id" "id" {
   byte_length = 8
 }
 
+########################################
+# Get WAF IDs for Prisoner Content Hub #
+########################################
+data "aws_ssm_parameter" "prisoner_content_hub" {
+  count = (var.ip_allow_listing_environment != null) ? 1 : 0
+  name  = "/prisoner-content-hub-${var.ip_allow_listing_environment}/web-acl-arn"
+}
+
 ##################################
 # Create CloudFront distribution #
 ##################################
@@ -33,6 +41,7 @@ resource "aws_cloudfront_distribution" "this" {
   http_version    = "http2and3"
   is_ipv6_enabled = true
   price_class     = var.price_class
+  web_acl_id      = (var.ip_allow_listing_environment != null) ? data.aws_ssm_parameter.prisoner_content_hub[0].value : null
   tags            = local.default_tags
 
   dynamic "default_cache_behavior" {
