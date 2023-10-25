@@ -36,13 +36,14 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
 # Create CloudFront distribution #
 ##################################
 resource "aws_cloudfront_distribution" "this" {
-  enabled         = true
-  comment         = "application: ${var.application}, environment: ${var.environment_name}"
-  http_version    = "http2and3"
-  is_ipv6_enabled = true
-  price_class     = var.price_class
-  web_acl_id      = (var.ip_allow_listing_environment != null) ? data.aws_ssm_parameter.prisoner_content_hub[0].value : null
-  tags            = local.default_tags
+  enabled             = true
+  comment             = "application: ${var.application}, environment: ${var.environment_name}"
+  http_version        = "http2and3"
+  is_ipv6_enabled     = true
+  price_class         = var.price_class
+  default_root_object = var.default_root_object
+  web_acl_id          = (var.ip_allow_listing_environment != null) ? data.aws_ssm_parameter.prisoner_content_hub[0].value : null
+  tags                = local.default_tags
 
   dynamic "default_cache_behavior" {
     for_each = [var.default_cache_behavior]

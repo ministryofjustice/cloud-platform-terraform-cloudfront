@@ -67,6 +67,7 @@ No modules.
 | <a name="input_bucket_id"></a> [bucket\_id](#input\_bucket\_id) | S3 bucket ID to serve content from (used to automatically create the appropriate policy) | `string` | n/a | yes |
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Area of the MOJ responsible for the service | `string` | n/a | yes |
 | <a name="input_default_cache_behavior"></a> [default\_cache\_behavior](#input\_default\_cache\_behavior) | Default cache behaviour | `map(any)` | `{}` | no |
+| <a name="input_default_root_object"></a> [default\_root\_object](#input\_default\_root\_object) | Object that you want CloudFront to return (for example, index.html) when an end user requests the root URL. | `string` | `null` | no |
 | <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | Environment name | `string` | n/a | yes |
 | <a name="input_geo_restriction"></a> [geo\_restriction](#input\_geo\_restriction) | Geographical restrictions | `map(any)` | `{}` | no |
 | <a name="input_infrastructure_support"></a> [infrastructure\_support](#input\_infrastructure\_support) | The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>) | `string` | n/a | yes |
