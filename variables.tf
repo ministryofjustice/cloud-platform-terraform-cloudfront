@@ -11,6 +11,12 @@ variable "bucket_id" {
   description = "S3 bucket ID to serve content from (used to automatically create the appropriate policy)"
 }
 
+variable "default_root_object" {
+  type        = string
+  description = "Object that you want CloudFront to return (for example, index.html) when an end user requests the root URL."
+  default     = null
+}
+
 variable "default_cache_behavior" {
   type        = map(any)
   description = "Default cache behaviour"
