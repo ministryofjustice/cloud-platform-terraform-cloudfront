@@ -12,7 +12,7 @@ module "s3" {
 }
 
 module "cloudfront" {
-  # source = "github.com/ministryofjustice/cloud-platform-terraform-cloudfront?ref=<latest-version>" # use the latest release
+  # source = "github.com/ministryofjustice/cloud-platform-terraform-cloudfront?ref=version" # use the latest release
   source = "../" # use the latest release
 
   # Configuration
