@@ -1,6 +1,12 @@
 #################
 # Configuration #
 #################
+variable "aliases" {
+  type        = list(string)
+  description = "Extra CNAMEs (alternate domain names), if any, for this distribution."
+  default     = []
+}
+
 variable "bucket_domain_name" {
   type        = string
   description = "S3 bucket domain name to serve content from"
@@ -9,6 +15,18 @@ variable "bucket_domain_name" {
 variable "bucket_id" {
   type        = string
   description = "S3 bucket ID to serve content from (used to automatically create the appropriate policy)"
+}
+
+variable "cloudfront_function" {
+  type        = map(any)
+  description = "Provides a CloudFront Function resource." 
+  default     = {}
+}
+
+variable "cloudfront_function_event_type" {
+  type        = string
+  description = "Specific event to trigger the function. Valid values: viewer-request or viewer-respons."
+  default     = "viewer-request"
 }
 
 variable "default_root_object" {

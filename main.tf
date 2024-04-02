@@ -32,11 +32,27 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
   name  = "/prisoner-content-hub-${var.ip_allow_listing_environment}/web-acl-arn"
 }
 
+##############################
+# Create CloudFront Function #
+##############################
+resource "aws_cloudfront_function" "this" {
+  count   = var.cloudfront_function.code ? 1 : 0
+  # Required
+  name    = lookup(var.cloudfront_function, "name", "default")
+  code    = lookup(var.cloudfront_function, "code", null)
+  runtime = lookup(var.cloudfront_function, "runtime", "cloudfront-js-2.0")
+  # Optional
+  comment = lookup(var.cloudfront_function, "comment", null)
+  publish = lookup(var.cloudfront_function, "publish", true)
+  # Ommit key_value_store_associations because they're not implemented.
+}
+
 ##################################
 # Create CloudFront distribution #
 ##################################
 resource "aws_cloudfront_distribution" "this" {
   enabled             = true
+  aliases             = var.aliases
   comment             = "application: ${var.application}, environment: ${var.environment_name}"
   http_version        = "http2and3"
   is_ipv6_enabled     = true
@@ -53,6 +69,11 @@ resource "aws_cloudfront_distribution" "this" {
       cached_methods             = lookup(default_cache_behavior.value, "cached_methods", ["GET", "HEAD"])
       compress                   = lookup(default_cache_behavior.value, "compress", true)
       default_ttl                = lookup(default_cache_behavior.value, "default_ttl", 0)
+      # TODO fix: Unexpected attribute: An attribute named "function_association" is not expected here
+      function_association       = aws_cloudfront_function.this[0] ? {
+        event_type = var.cloudfront_function_event_type
+        function_arn = aws_cloudfront_function.this[0].arn
+      } : null
       max_ttl                    = lookup(default_cache_behavior.value, "max_ttl", 0)
       min_ttl                    = lookup(default_cache_behavior.value, "min_ttl", 0)
       target_origin_id           = local.target_origin_id
