@@ -54,7 +54,7 @@ resource "aws_cloudfront_public_key" "this" {
 
 resource "aws_cloudfront_key_group" "this" {
   count = var.public_key_pem ? 1 : 0
-  items = [aws_cloudfront_public_key.this.id]
+  items = [aws_cloudfront_public_key.this[count.index]]
   name  = "${var.application}-${var.namespace}-key-group"
   # I'm not sure about the below:
   lifecycle {
