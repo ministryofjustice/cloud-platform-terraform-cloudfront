@@ -79,7 +79,7 @@ No modules.
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
-| <a name="input_public_key_pem"></a> [public\_key\_pem](#input\_public\_key\_pem) | Public key used to validate signed URLs or cookies. In PEM format, including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. | `string` | n/a | no |
+| <a name="input_public_key_pems"></a> [public\_key\_pems](#input\_public\_key\_pems) | Public keys used to validate signed URLs or cookies. In PEM format, including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. | `list(string)` | n/a | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
 
 ## Outputs
@@ -88,7 +88,7 @@ No modules.
 |------|-------------|
 | <a name="output_cloudfront_url"></a> [cloudfront\_url](#output\_cloudfront\_url) | The CloudFront distrubtion domain name |
 | <a name="cloudfront_hosted_zone_id"></a> [cloudfront\_hosted\_zone\_id](#cloudfront\_hosted\_zone\_id) | The CloudFront Route 53 zone ID |
-| <a name="cloudfront_public_key_id"></a> [cloudfront\_public\_key\_id](#cloudfront\_public\_key\_id) | The CloudFront public key ID |
+| <a name="cloudfront_public_key_ids"></a> [cloudfront\_public\_key\_ids](#cloudfront\_public\_key\_ids) | The CloudFront public key IDs |
 <!-- END_TF_DOCS -->
 
 ## Tags

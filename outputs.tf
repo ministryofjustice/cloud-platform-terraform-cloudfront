@@ -8,7 +8,7 @@ output "cloudfront_hosted_zone_id" {
   value       = aws_cloudfront_distribution.this.hosted_zone_id
 }
 
-output "cloudfront_public_key_id" {
-  description = "The CloudFront public key ID"
-  value       = aws_cloudfront_public_key.this[0] ? aws_cloudfront_public_key.this[0].id : null
+output "cloudfront_public_key_ids" {
+  description = "The CloudFront public key IDs"
+  value       = aws_cloudfront_public_key.this[0] ? aws_cloudfront_public_key.this[*].id : null
 }

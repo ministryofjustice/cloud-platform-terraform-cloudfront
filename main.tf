@@ -37,9 +37,10 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
 ################################
 
 resource "aws_cloudfront_public_key" "this" {
-  count       = var.public_key_pem ? 1 : 0
-  encoded_key = var.public_key_pem
-  name        = "${var.application}-${var.namespace}-public-key"
+  for_each    = toset(var.public_key_pems)
+
+  encoded_key = each.value
+  name        = "${var.application}-${var.namespace}-${substr(each.value, 0, 8)}-public-key"
   # I'm not sure about the below:
   # remove below if you have changed the value of the encoded_key 
   lifecycle {
@@ -54,7 +55,7 @@ resource "aws_cloudfront_public_key" "this" {
 
 resource "aws_cloudfront_key_group" "this" {
   count = aws_cloudfront_public_key.this[0] ? 1 : 0
-  items = [aws_cloudfront_public_key.this[count.index]]
+  items = aws_cloudfront_public_key.this[*].id
   name  = "${var.application}-${var.namespace}-key-group"
   # I'm not sure about the below:
   lifecycle {

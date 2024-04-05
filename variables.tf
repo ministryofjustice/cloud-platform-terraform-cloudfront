@@ -17,10 +17,10 @@ variable "bucket_id" {
   description = "S3 bucket ID to serve content from (used to automatically create the appropriate policy)"
 }
 
-variable "public_key_pem" {
-  type        = string
+variable "public_key_pems" {
+  type        = list(string)
   description = "Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---."
-  default     = null
+  default     = []
 }
 
 variable "default_root_object" {
