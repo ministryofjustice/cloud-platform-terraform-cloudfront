@@ -53,7 +53,7 @@ resource "aws_cloudfront_public_key" "this" {
 ###############################
 
 resource "aws_cloudfront_key_group" "this" {
-  count = var.public_key_pem ? 1 : 0
+  count = aws_cloudfront_public_key.this[0] ? 1 : 0
   items = [aws_cloudfront_public_key.this[count.index]]
   name  = "${var.application}-${var.namespace}-key-group"
   # I'm not sure about the below:
@@ -90,7 +90,7 @@ resource "aws_cloudfront_distribution" "this" {
       viewer_protocol_policy     = "redirect-to-https"                                                                                        # Enforce redirecting HTTP to HTTPS
       cache_policy_id            = lookup(default_cache_behavior.value, "cache_policy_id", "658327ea-f89d-4fab-a63d-7e88639e58f6")            # 658327ea-f89d-4fab-a63d-7e88639e58f6 is "CachingOptimized"
       response_headers_policy_id = lookup(default_cache_behavior.value, "response_headers_policy_id", "67f7725c-6f97-4210-82d7-5512b31e9d03") # 67f7725c-6f97-4210-82d7-5512b31e9d03 is "Managed-SecurityHeadersPolicy"
-      trusted_key_groups         = var.public_key_pem ? [aws_cloudfront_key_group.this.id] : null
+      trusted_key_groups         = aws_cloudfront_key_group.this[0] ? [aws_cloudfront_key_group.this[0].id] : null
     }
   }
 
