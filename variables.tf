@@ -17,16 +17,10 @@ variable "bucket_id" {
   description = "S3 bucket ID to serve content from (used to automatically create the appropriate policy)"
 }
 
-variable "cloudfront_function" {
-  type        = map(any)
-  description = "Provides a CloudFront Function resource." 
-  default     = {}
-}
-
-variable "cloudfront_function_event_type" {
+variable "public_key_pem" {
   type        = string
-  description = "Specific event to trigger the function. Valid values: viewer-request or viewer-respons."
-  default     = "viewer-request"
+  description = "Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---."
+  default     = null
 }
 
 variable "default_root_object" {

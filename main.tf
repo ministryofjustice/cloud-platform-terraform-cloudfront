@@ -32,19 +32,34 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
   name  = "/prisoner-content-hub-${var.ip_allow_listing_environment}/web-acl-arn"
 }
 
-##############################
-# Create CloudFront Function #
-##############################
-resource "aws_cloudfront_function" "this" {
-  count   = var.cloudfront_function.code ? 1 : 0
-  # Required
-  name    = lookup(var.cloudfront_function, "name", "default")
-  code    = lookup(var.cloudfront_function, "code", null)
-  runtime = lookup(var.cloudfront_function, "runtime", "cloudfront-js-2.0")
-  # Optional
-  comment = lookup(var.cloudfront_function, "comment", null)
-  publish = lookup(var.cloudfront_function, "publish", true)
-  # Ommit key_value_store_associations because they're not implemented.
+################################
+# Create CloudFront Public Key #
+################################
+
+resource "aws_cloudfront_public_key" "this" {
+  count       = var.public_key_pem ? 1 : 0
+  encoded_key = var.public_key_pem
+  name        = "${var.application}-${var.namespace}-public-key"
+  # I'm not sure about the below:
+  # remove below if you have changed the value of the encoded_key 
+  lifecycle {
+    ignore_changes        = [encoded_key]
+    create_before_destroy = true
+  }
+}
+
+###############################
+# Create CloudFront Key Group #
+###############################
+
+resource "aws_cloudfront_key_group" "this" {
+  count = var.public_key_pem ? 1 : 0
+  items = [aws_cloudfront_public_key.this.id]
+  name  = "${var.application}-${var.namespace}-key-group"
+  # I'm not sure about the below:
+  lifecycle {
+    ignore_changes = [items]
+  }
 }
 
 ##################################
@@ -69,17 +84,13 @@ resource "aws_cloudfront_distribution" "this" {
       cached_methods             = lookup(default_cache_behavior.value, "cached_methods", ["GET", "HEAD"])
       compress                   = lookup(default_cache_behavior.value, "compress", true)
       default_ttl                = lookup(default_cache_behavior.value, "default_ttl", 0)
-      # TODO fix: Unexpected attribute: An attribute named "function_association" is not expected here
-      function_association       = aws_cloudfront_function.this[0] ? {
-        event_type = var.cloudfront_function_event_type
-        function_arn = aws_cloudfront_function.this[0].arn
-      } : null
       max_ttl                    = lookup(default_cache_behavior.value, "max_ttl", 0)
       min_ttl                    = lookup(default_cache_behavior.value, "min_ttl", 0)
       target_origin_id           = local.target_origin_id
       viewer_protocol_policy     = "redirect-to-https"                                                                                        # Enforce redirecting HTTP to HTTPS
       cache_policy_id            = lookup(default_cache_behavior.value, "cache_policy_id", "658327ea-f89d-4fab-a63d-7e88639e58f6")            # 658327ea-f89d-4fab-a63d-7e88639e58f6 is "CachingOptimized"
       response_headers_policy_id = lookup(default_cache_behavior.value, "response_headers_policy_id", "67f7725c-6f97-4210-82d7-5512b31e9d03") # 67f7725c-6f97-4210-82d7-5512b31e9d03 is "Managed-SecurityHeadersPolicy"
+      trusted_key_groups         = var.public_key_pem ? [aws_cloudfront_key_group.this.id] : null
     }
   }
 
