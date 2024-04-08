@@ -40,7 +40,8 @@ resource "aws_cloudfront_public_key" "this" {
   for_each    = toset(var.public_key_pems)
 
   encoded_key = each.value
-  name        = "${var.application}-${var.namespace}-${substr(each.value, 0, 8)}-public-key"
+  # Offest 27 will skip over the "-----BEGIN PUBLIC KEY-----\n" part of the PEM.
+  name        = "${var.application}-${var.namespace}-${substr(each.value, 27, 8)}-public-key"
   # I'm not sure about the below:
   # remove below if you have changed the value of the encoded_key 
   lifecycle {
