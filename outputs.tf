@@ -10,9 +10,12 @@ output "cloudfront_hosted_zone_id" {
 
 output "cloudfront_public_key_ids" {
   description = "The CloudFront public key IDs, with reference to the public key's first 8 characters."
-  value       = {
-    for key, details in aws_cloudfront_public_key.this:
+  value = [
+    for i in range(length(aws_cloudfront_public_key.this)) :
+    {
+      "id"  = aws_cloudfront_public_key.this[i].id
       # Offest 27 will skip over the "-----BEGIN PUBLIC KEY-----\n" part of the PEM.
-      key => ({"id" = details.id , "key" = substr(details.encoded_key, 27, 8)})
-  }
+      "key" = substr(aws_cloudfront_public_key.this[i].encoded_key, 27, 8)
+    }
+  ]
 }
