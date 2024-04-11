@@ -42,12 +42,6 @@ resource "aws_cloudfront_public_key" "this" {
   encoded_key = each.value
   # Offest 71 will skip over the "-----BEGIN PUBLIC KEY-----\n" and header parts of the PEM.
   name        = "${var.application}-${var.namespace}-${substr(each.value, 71, 8)}-public-key"
-  # I'm not sure about the below:
-  # remove below if you have changed the value of the encoded_key 
-  lifecycle {
-    ignore_changes        = [encoded_key]
-    create_before_destroy = true
-  }
 }
 
 ###############################
@@ -58,10 +52,6 @@ resource "aws_cloudfront_key_group" "this" {
   count = aws_cloudfront_public_key.this[0] ? 1 : 0
   items = aws_cloudfront_public_key.this[*].id
   name  = "${var.application}-${var.namespace}-key-group"
-  # I'm not sure about the below:
-  lifecycle {
-    ignore_changes = [items]
-  }
 }
 
 ##################################
