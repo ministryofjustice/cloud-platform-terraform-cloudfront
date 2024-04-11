@@ -88,7 +88,7 @@ No modules.
 |------|-------------|
 | <a name="output_cloudfront_url"></a> [cloudfront\_url](#output\_cloudfront\_url) | The CloudFront distrubtion domain name |
 | <a name="cloudfront_hosted_zone_id"></a> [cloudfront\_hosted\_zone\_id](#cloudfront\_hosted\_zone\_id) | The CloudFront Route 53 zone ID |
-| <a name="cloudfront_public_key_ids"></a> [cloudfront\_public\_key\_ids](#cloudfront\_public\_key\_ids) | The CloudFront public key IDs with the first unique 8 characters of the public key (starting at offset 71). In the format [{id: <theId>, key: <pubKeyFirst8Chars> }] |
+| <a name="cloudfront_public_key_ids"></a> [cloudfront\_public\_key\_ids](#cloudfront\_public\_key\_ids) | The CloudFront public key IDs with the first 8 characters of the public key's sha256. In the format [{id: <theId>, hash: <pubKeySha256First8> }] |
 <!-- END_TF_DOCS -->
 
 ## Tags

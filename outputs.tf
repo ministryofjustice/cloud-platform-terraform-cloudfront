@@ -13,9 +13,8 @@ output "cloudfront_public_key_ids" {
   value = [
     for i in range(length(aws_cloudfront_public_key.this)) :
     {
-      "id"  = aws_cloudfront_public_key.this[i].id
-      # Offest 71 will skip over the "-----BEGIN PUBLIC KEY-----\n" and header parts of the PEM.
-      "key" = substr(aws_cloudfront_public_key.this[i].encoded_key, 71, 8)
+      "id"   = aws_cloudfront_public_key.this[i].id
+      "hash" = substr(sha256(aws_cloudfront_public_key.this[i].encoded_key), 0, 8)
     }
   ]
 }
