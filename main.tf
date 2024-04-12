@@ -48,7 +48,7 @@ resource "aws_cloudfront_public_key" "this" {
 
   encoded_key = formatted_econded_keys[count.index]
   name        = "${var.application}-${var.namespace}-${encoded_keys_short_hash[count.index]}"
-  comment     = var.trusted_public_keys[count.index].comment != null ? var.trusted_public_keys[count.index].comment : encoded_keys_short_hash[count.index]
+  comment     = var.trusted_public_keys[count.index].comment == "" ? var.trusted_public_keys[count.index].comment : encoded_keys_short_hash[count.index]
 }
 
 ###############################

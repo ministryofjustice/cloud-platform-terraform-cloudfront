@@ -79,7 +79,7 @@ No modules.
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
-| <a name="input_public_key_pems"></a> [public\_key\_pems](#input\_public\_key\_pems) | Public keys used to validate signed URLs or cookies. In PEM format, including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. | `list( object({ encoded_key = string, comment = { type = string, default = "" } }) )` | n/a | no |
+| <a name="input_public_key_pems"></a> [public\_key\_pems](#input\_public\_key\_pems) | Public keys used to validate signed URLs or cookies. In PEM format, including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. | `list( object({ encoded_key = string, comment = string }) )` | n/a | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
 
 ## Outputs
