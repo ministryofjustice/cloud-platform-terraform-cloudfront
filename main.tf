@@ -37,10 +37,10 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
 ################################
 
 resource "aws_cloudfront_public_key" "this" {
-  for_each    = toset(var.public_key_pems)
+  count = length(var.public_key_pems)
 
-  encoded_key = each.value
-  name        = "${var.application}-${var.namespace}-${substr(sha256(each.value), 0, 8)}-public-key"
+  encoded_key = var.public_key_pems[count.index]
+  name        = "${var.application}-${var.namespace}-${substr(sha256(var.public_key_pems[count.index]), 0, 8)}-public-key"
 }
 
 ###############################
@@ -49,7 +49,8 @@ resource "aws_cloudfront_public_key" "this" {
 
 resource "aws_cloudfront_key_group" "this" {
   count = length(var.public_key_pems) == 0 ? 0 : 1
-  items = aws_cloudfront_public_key[*].id
+
+  items = aws_cloudfront_public_key.this[*].id
   name  = "${var.application}-${var.namespace}-key-group"
 }
 
