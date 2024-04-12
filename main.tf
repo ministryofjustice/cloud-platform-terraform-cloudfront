@@ -46,9 +46,9 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
 resource "aws_cloudfront_public_key" "this" {
   count = length(var.trusted_public_keys)
 
-  encoded_key = formatted_econded_keys[count.index]
-  name        = "${var.application}-${var.namespace}-${encoded_keys_short_hash[count.index]}"
-  comment     = var.trusted_public_keys[count.index].comment == "" ? var.trusted_public_keys[count.index].comment : encoded_keys_short_hash[count.index]
+  encoded_key = local.econded_keys_formatted[count.index]
+  name        = "${var.application}-${var.namespace}-${local.encoded_keys_short_hash[count.index]}"
+  comment     = var.trusted_public_keys[count.index].comment == "" ? var.trusted_public_keys[count.index].comment : local.encoded_keys_short_hash[count.index]
 }
 
 ###############################
