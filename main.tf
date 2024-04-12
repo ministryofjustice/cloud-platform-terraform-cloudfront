@@ -127,8 +127,6 @@ resource "aws_cloudfront_distribution" "this" {
     ssl_support_method  = var.aliases_cert_arn ? "sni-only" : null
   }
 
-  depends_on = length(var.aliases) == 0 ? [] : [aws_acm_certificate.cert-my-aws-project-com]
-
 }
 
 ################################
