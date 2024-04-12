@@ -20,7 +20,7 @@ variable "bucket_id" {
 variable "trusted_public_keys" {
   type = list(object({
     encoded_key = string
-    comment     = optional(string)
+    comment     = any # An optional string.
   }))
   description = "An array of objects. Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment."
   default     = []
