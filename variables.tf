@@ -7,6 +7,12 @@ variable "aliases" {
   default     = []
 }
 
+variable "aliases_cert_arn" {
+  type        = string
+  description = "ACM certificate ARN for the aliases"
+  default     = null
+}
+
 variable "bucket_domain_name" {
   type        = string
   description = "S3 bucket domain name to serve content from"

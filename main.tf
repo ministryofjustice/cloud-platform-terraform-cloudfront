@@ -119,8 +119,16 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true # Defaults to using CloudFront's certificate rather than using a custom domain and ACM
+     # If no aliases and using a CloudFront domain - use CloudFront's certificate rather than using a custom domain and ACM
+    cloudfront_default_certificate = var.aliases_cert_arn == null
+
+    # If using aliases - use ACM certificate and SNI-only SSL support method.
+    acm_certificate_arn = var.aliases_cert_arn
+    ssl_support_method  = var.aliases_cert_arn ? "sni-only" : null
   }
+
+  depends_on = length(var.aliases) == 0 ? [] : [aws_acm_certificate.cert-my-aws-project-com]
+
 }
 
 ################################
