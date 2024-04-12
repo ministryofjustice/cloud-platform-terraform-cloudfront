@@ -17,9 +17,14 @@ variable "bucket_id" {
   description = "S3 bucket ID to serve content from (used to automatically create the appropriate policy)"
 }
 
-variable "public_key_pems" {
-  type        = list(string)
-  description = "Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---."
+variable "trusted_public_keys" {
+  type = list(
+    object({
+      encoded_key = string
+      comment     = { type = string, default = "" }
+    })
+  )
+  description = "An array of objects. Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment."
   default     = []
 }
 

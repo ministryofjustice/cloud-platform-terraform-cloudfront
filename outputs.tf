@@ -9,12 +9,12 @@ output "cloudfront_hosted_zone_id" {
 }
 
 output "cloudfront_public_key_ids" {
-  description = "The CloudFront public key IDs, with reference to the public key's first 8 characters."
+  description = "The CloudFront public key IDs, with reference to the public key's comment, defaults to first 8 characters of it's sha256."
   value = jsonencode([
     for i in range(length(aws_cloudfront_public_key.this)) :
     {
-      "id"   = aws_cloudfront_public_key.this[i].id
-      "hash" = substr(sha256(aws_cloudfront_public_key.this[i].encoded_key), 0, 8)
+      "id"      = aws_cloudfront_public_key.this[i].id
+      "comment" = aws_cloudfront_public_key.this[i].comment
     }
   ])
 }

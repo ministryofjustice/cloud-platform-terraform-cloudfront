@@ -15,6 +15,13 @@ locals {
     environment-name       = var.environment_name
     infrastructure-support = var.infrastructure_support
   }
+
+  # Trusted public keys.
+  # When setting encoded_key value, there needs a newline at the end of string. 
+  # Otherwise, multiple runs of terraform will want to recreate the aws_cloudfront_public_key resource.
+  econded_keys_formatted  = [for key in var.trusted_public_keys : "${trimspace(key.encoded_key)}\n"]
+  # Short hash of the encoded key - for part of the public key name and maybe comment.
+  encoded_keys_short_hash = [for key in local.econded_keys_formatted : substr(sha256(key), 0, 8)]
 }
 
 ########################
@@ -37,10 +44,11 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
 ################################
 
 resource "aws_cloudfront_public_key" "this" {
-  count = length(var.public_key_pems)
+  count = length(var.trusted_public_keys)
 
-  encoded_key = var.public_key_pems[count.index]
-  name        = "${var.application}-${var.namespace}-${substr(sha256(var.public_key_pems[count.index]), 0, 8)}-public-key"
+  encoded_key = formatted_econded_keys[count.index]
+  name        = "${var.application}-${var.namespace}-${encoded_keys_short_hash[count.index]}"
+  comment     = var.trusted_public_keys[count.index].comment == "" ? encoded_keys_short_hash[count.index] : var.trusted_public_keys[count.index].comment
 }
 
 ###############################
@@ -48,7 +56,7 @@ resource "aws_cloudfront_public_key" "this" {
 ###############################
 
 resource "aws_cloudfront_key_group" "this" {
-  count = length(var.public_key_pems) == 0 ? 0 : 1
+  count = length(var.trusted_public_keys) == 0 ? 0 : 1
 
   items = aws_cloudfront_public_key.this[*].id
   name  = "${var.application}-${var.namespace}-key-group"
@@ -82,7 +90,7 @@ resource "aws_cloudfront_distribution" "this" {
       viewer_protocol_policy     = "redirect-to-https"                                                                                        # Enforce redirecting HTTP to HTTPS
       cache_policy_id            = lookup(default_cache_behavior.value, "cache_policy_id", "658327ea-f89d-4fab-a63d-7e88639e58f6")            # 658327ea-f89d-4fab-a63d-7e88639e58f6 is "CachingOptimized"
       response_headers_policy_id = lookup(default_cache_behavior.value, "response_headers_policy_id", "67f7725c-6f97-4210-82d7-5512b31e9d03") # 67f7725c-6f97-4210-82d7-5512b31e9d03 is "Managed-SecurityHeadersPolicy"
-      trusted_key_groups         = length(var.public_key_pems) == 0 ? null : [aws_cloudfront_key_group.this[0].id]
+      trusted_key_groups         = length(var.trusted_public_keys) == 0 ? null : [aws_cloudfront_key_group.this[0].id]
     }
   }
 
