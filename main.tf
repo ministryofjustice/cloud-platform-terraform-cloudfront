@@ -49,7 +49,7 @@ resource "aws_cloudfront_public_key" "this" {
 
 resource "aws_cloudfront_key_group" "this" {
   count = length(var.public_key_pems) == 0 ? 0 : 1
-  items = aws_cloudfront_public_key.this[*].id
+  items = aws_cloudfront_public_key[*].id
   name  = "${var.application}-${var.namespace}-key-group"
 }
 
