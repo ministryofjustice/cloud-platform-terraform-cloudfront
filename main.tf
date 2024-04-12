@@ -124,7 +124,7 @@ resource "aws_cloudfront_distribution" "this" {
 
     # If using aliases - use ACM certificate and SNI-only SSL support method.
     acm_certificate_arn = var.aliases_cert_arn
-    ssl_support_method  = var.aliases_cert_arn ? "sni-only" : null
+    ssl_support_method  = var.aliases_cert_arn != null ? "sni-only" : null
   }
 
 }
