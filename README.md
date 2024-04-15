@@ -88,7 +88,7 @@ No modules.
 |------|-------------|
 | <a name="output_cloudfront_url"></a> [cloudfront\_url](#output\_cloudfront\_url) | The CloudFront distrubtion domain name |
 | <a name="cloudfront_hosted_zone_id"></a> [cloudfront\_hosted\_zone\_id](#cloudfront\_hosted\_zone\_id) | The CloudFront Route 53 zone ID |
-| <a name="cloudfront_public_key_ids"></a> [cloudfront\_public\_key\_ids](#cloudfront\_public\_key\_ids) | The CloudFront public key IDs with the optional comment, or first 8 characters of the public key's sha256. In the format [{id: <theId>, comment: <inputComment|pubKeySha256First8> }] |
+| <a name="cloudfront_public_keys"></a> [cloudfront\_public\_keys](#cloudfront\_public\_keys) | The CloudFront public key IDs with the optional comment, or first 8 characters of the public key's sha256. In the format [{id: <theId>, comment: <inputComment|pubKeySha256First8> }] |
 <!-- END_TF_DOCS -->
 
 ## Tags
