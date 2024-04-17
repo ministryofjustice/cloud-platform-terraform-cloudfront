@@ -22,6 +22,8 @@ locals {
   econded_keys_formatted  = [for key in var.trusted_public_keys : "${trimspace(key.encoded_key)}\n"]
   # Short hash of the encoded key - for part of the public key name and maybe comment.
   encoded_keys_short_hash = [for key in local.econded_keys_formatted : substr(sha256(key), 0, 8)]
+  # Filter out the keys that are associated. This is used to determine if the key group should be created.
+  associated_keys_count   = length([for key in var.trusted_public_keys : key if key.associate])
 }
 
 ########################
@@ -63,10 +65,15 @@ resource "aws_cloudfront_public_key" "this" {
 ###############################
 
 resource "aws_cloudfront_key_group" "this" {
-  count = length(var.trusted_public_keys) == 0 ? 0 : 1
+  count = local.associated_keys_count > 0 ? 1 : 0
 
-  items = aws_cloudfront_public_key.this[*].id
   name  = "${var.application}-${var.namespace}-key-group"
+  # Get the ids of aws_cloudfront_public_key.this where the referenced key has `associate = true`.
+  # Using the machanism of associated should mean that we can disasociate a key from the key group by setting associate to false.
+  # This should prevent an error like `The Cloudfront public key is currently associated with either Key Group`
+  items = [
+    for idx, key in aws_cloudfront_public_key.this : key.id if var.trusted_public_keys[idx].associate
+  ]
 }
 
 ##################################
@@ -97,7 +104,7 @@ resource "aws_cloudfront_distribution" "this" {
       viewer_protocol_policy     = "redirect-to-https"                                                                                        # Enforce redirecting HTTP to HTTPS
       cache_policy_id            = lookup(default_cache_behavior.value, "cache_policy_id", "658327ea-f89d-4fab-a63d-7e88639e58f6")            # 658327ea-f89d-4fab-a63d-7e88639e58f6 is "CachingOptimized"
       response_headers_policy_id = lookup(default_cache_behavior.value, "response_headers_policy_id", "67f7725c-6f97-4210-82d7-5512b31e9d03") # 67f7725c-6f97-4210-82d7-5512b31e9d03 is "Managed-SecurityHeadersPolicy"
-      trusted_key_groups         = length(var.trusted_public_keys) == 0 ? null : [aws_cloudfront_key_group.this[0].id]
+      trusted_key_groups         = local.associated_keys_count > 0 ? [aws_cloudfront_key_group.this[0].id] : null
     }
   }
 

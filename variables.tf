@@ -27,6 +27,7 @@ variable "trusted_public_keys" {
   type = list(object({
     encoded_key = string
     comment     = string
+    associate   = bool
   }))
   description = "Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment."
   default     = []
