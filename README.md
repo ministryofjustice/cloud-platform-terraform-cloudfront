@@ -79,7 +79,7 @@ No modules.
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
-| <a name="input_public_key_pems"></a> [public\_key\_pems](#input\_public\_key\_pems) | Public keys used to validate signed URLs or cookies. In PEM format, including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. | `list( object({ encoded_key = string, comment = string }) )` | n/a | no |
+| <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Trusted public keys used to validate signed URLs or cookies. In PEM format, including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. To delete a public key, deploy with associate = false. Upon success, remove the object and re-deploy. | `list( object({ encoded_key = string, comment = string, associate = boolean }) )` | n/a | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
 
 ## Outputs
@@ -88,7 +88,7 @@ No modules.
 |------|-------------|
 | <a name="output_cloudfront_url"></a> [cloudfront\_url](#output\_cloudfront\_url) | The CloudFront distrubtion domain name |
 | <a name="cloudfront_hosted_zone_id"></a> [cloudfront\_hosted\_zone\_id](#cloudfront\_hosted\_zone\_id) | The CloudFront Route 53 zone ID |
-| <a name="cloudfront_public_keys"></a> [cloudfront\_public\_keys](#cloudfront\_public\_keys) | The CloudFront public key IDs with the optional comment, or first 8 characters of the public key's sha256. In the format [{id: <theId>, comment: <inputComment|pubKeySha256First8> }] |
+| <a name="cloudfront_public_keys"></a> [cloudfront\_public\_keys](#cloudfront\_public\_keys) | The CloudFront public key IDs with the optional comment, or first 8 characters of the public key's sha256. In the format [{id: <theId>, comment: <inputComment|pubKeySha256First8>, group: <idOfKeyGroup|null> }] |
 <!-- END_TF_DOCS -->
 
 ## Tags
