@@ -49,6 +49,13 @@ resource "aws_cloudfront_public_key" "this" {
   encoded_key = local.econded_keys_formatted[count.index]
   name        = "${var.application}-${var.namespace}-${local.encoded_keys_short_hash[count.index]}"
   comment     = var.trusted_public_keys[count.index].comment != "" ? var.trusted_public_keys[count.index].comment : local.encoded_keys_short_hash[count.index]
+
+  lifecycle {
+    # If encoded_key is changed then terraform doesn't update it in place. It needs to be recreated.
+    # The create_before_destroy lifecycle is used to ensure that the new key is created before the old key is destroyed.
+    # This should prevent an error like `The Cloudfront public key is currently associated with either Key Group`
+    create_before_destroy = true
+  }
 }
 
 ###############################
