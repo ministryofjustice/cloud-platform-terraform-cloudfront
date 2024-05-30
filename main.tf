@@ -19,9 +19,9 @@ locals {
   # Trusted public keys.
   # When setting encoded_key value, there needs a newline at the end of string. 
   # Otherwise, multiple runs of terraform will want to recreate the aws_cloudfront_public_key resource.
-  econded_keys_formatted  = [for key in var.trusted_public_keys : "${trimspace(key.encoded_key)}\n"]
+  encoded_keys_formatted  = [for key in var.trusted_public_keys : "${trimspace(key.encoded_key)}\n"]
   # Short hash of the encoded key - for part of the public key name and maybe comment.
-  encoded_keys_short_hash = [for key in local.econded_keys_formatted : substr(sha256(key), 0, 8)]
+  encoded_keys_short_hash = [for key in local.encoded_keys_formatted : substr(sha256(key), 0, 8)]
   # Filter out the keys that are associated. This is used to determine if the key group should be created.
   associated_keys_count   = length([for key in var.trusted_public_keys : key if key.associate])
 }
@@ -48,7 +48,7 @@ data "aws_ssm_parameter" "prisoner_content_hub" {
 resource "aws_cloudfront_public_key" "this" {
   count = length(var.trusted_public_keys)
 
-  encoded_key = local.econded_keys_formatted[count.index]
+  encoded_key = local.encoded_keys_formatted[count.index]
   name        = "${var.application}-${var.namespace}-${local.encoded_keys_short_hash[count.index]}"
   comment     = var.trusted_public_keys[count.index].comment != "" ? var.trusted_public_keys[count.index].comment : local.encoded_keys_short_hash[count.index]
 
