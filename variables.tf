@@ -1,6 +1,18 @@
 #################
 # Configuration #
 #################
+variable "aliases" {
+  type        = list(string)
+  description = "Extra CNAMEs (alternate domain names), if any, for this distribution."
+  default     = []
+}
+
+variable "aliases_cert_arn" {
+  type        = string
+  description = "ACM certificate ARN for the aliases"
+  default     = null
+}
+
 variable "bucket_domain_name" {
   type        = string
   description = "S3 bucket domain name to serve content from"
@@ -9,6 +21,16 @@ variable "bucket_domain_name" {
 variable "bucket_id" {
   type        = string
   description = "S3 bucket ID to serve content from (used to automatically create the appropriate policy)"
+}
+
+variable "trusted_public_keys" {
+  type = list(object({
+    encoded_key = string
+    comment     = string
+    associate   = bool
+  }))
+  description = "Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment."
+  default     = []
 }
 
 variable "default_root_object" {

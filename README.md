@@ -53,6 +53,8 @@ No modules.
 |------|------|
 | [aws_cloudfront_distribution.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
 | [aws_cloudfront_origin_access_control.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_origin_access_control) | resource |
+| [aws_cloudfront_public_key.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_public_key) | resource |
+| [aws_cloudfront_key_group.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_public_key) | resource |
 | [aws_s3_bucket_policy.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [random_id.id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [aws_iam_policy_document.bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -62,6 +64,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aliases"></a> [aliases](#input\_aliases) | Extra CNAMEs (alternate domain names) | `list(string)` | n/a | no |
 | <a name="input_application"></a> [application](#input\_application) | Application name | `string` | n/a | yes |
 | <a name="input_bucket_domain_name"></a> [bucket\_domain\_name](#input\_bucket\_domain\_name) | S3 bucket domain name to serve content from | `string` | n/a | yes |
 | <a name="input_bucket_id"></a> [bucket\_id](#input\_bucket\_id) | S3 bucket ID to serve content from (used to automatically create the appropriate policy) | `string` | n/a | yes |
@@ -76,6 +79,7 @@ No modules.
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
+| <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Trusted public keys used to validate signed URLs or cookies. In PEM format, including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. To delete a public key, deploy with associate = false. Upon success, remove the object and re-deploy. | `list( object({ encoded_key = string, comment = string, associate = boolean }) )` | n/a | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
 
 ## Outputs
@@ -83,6 +87,8 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_cloudfront_url"></a> [cloudfront\_url](#output\_cloudfront\_url) | The CloudFront distrubtion domain name |
+| <a name="cloudfront_hosted_zone_id"></a> [cloudfront\_hosted\_zone\_id](#cloudfront\_hosted\_zone\_id) | The CloudFront Route 53 zone ID |
+| <a name="cloudfront_public_keys"></a> [cloudfront\_public\_keys](#cloudfront\_public\_keys) | The CloudFront public key IDs with the optional comment, or first 8 characters of the public key's sha256. In the format [{id: <theId>, comment: <inputComment|pubKeySha256First8>, group: <idOfKeyGroup|null> }] |
 <!-- END_TF_DOCS -->
 
 ## Tags
