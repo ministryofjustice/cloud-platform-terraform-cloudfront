@@ -145,10 +145,10 @@ resource "aws_cloudfront_distribution" "this" {
     for_each = [var.custom_error_response]
 
     content {
-      error_caching_min_ttl = lookup(origin.value, "error_caching_min_ttl", null)
-      error_code            = lookup(origin.value, "error_code", null)
-      response_code         = lookup(origin.value, "response_code", null)
-      response_page_path    = lookup(origin.value, "response_page_path", null)
+      error_caching_min_ttl = lookup(custom_error_response.value, "error_caching_min_ttl", null)
+      error_code            = lookup(custom_error_response.value, "error_code", null)
+      response_code         = lookup(custom_error_response.value, "response_code", null)
+      response_page_path    = lookup(custom_error_response.value, "response_page_path", null)
     }
   }
 
