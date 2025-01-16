@@ -69,6 +69,17 @@ variable "ip_allow_listing_environment" {
   description = "[Prisoner Content Hub only]: specify the environment name to restrict CloudFront to a preset IP allow-list, either `development`, `staging`, `production`. Leave empty for unrestricted access."
 }
 
+variable "custom_error_response" {
+  type = list(object({
+    error_caching_min_ttl = optional(number)
+    error_code            = number
+    response_code         = optional(number)
+    response_page_path    = optional(string)
+  }))
+  description = "One or more custom error response elements"
+  default     = []
+}
+
 ########
 # Tags #
 ########

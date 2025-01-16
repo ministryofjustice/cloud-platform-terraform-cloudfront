@@ -141,6 +141,17 @@ resource "aws_cloudfront_distribution" "this" {
     ssl_support_method  = var.aliases_cert_arn != null ? "sni-only" : null
   }
 
+  dynamic "custom_error_response" {
+    for_each = var.custom_error_response
+
+    content {
+      error_caching_min_ttl = lookup(custom_error_response.value, "error_caching_min_ttl", null)
+      error_code            = lookup(custom_error_response.value, "error_code", null)
+      response_code         = lookup(custom_error_response.value, "response_code", null)
+      response_page_path    = lookup(custom_error_response.value, "response_page_path", null)
+    }
+  }
+
 }
 
 ################################

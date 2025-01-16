@@ -81,7 +81,8 @@ No modules.
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
-| <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment. | <pre>list(object({<br>    encoded_key = string<br>    comment     = string<br>    associate   = bool<br>  }))</pre> | `[]` | no |
+| <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment. | <pre>list(object({<br>  encoded_key = string<br>  comment     = string<br>  associate   = bool<br>}))</pre> | `[]` | no |
+| <a name="input_custom_error_response"></a> [custom\_error\_response](#input\_custom\_error\_response) | Custom error response(s) | <pre>list(object({<br>  error_caching_min_ttl = optional(number)<br>  error_code            = number<br>  response_code         = optional(number)<br>  response_page_path    = optional(string)<br>}))</pre> | `[]` | no |
 
 ## Outputs
 
