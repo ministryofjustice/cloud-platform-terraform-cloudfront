@@ -142,7 +142,7 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   dynamic "custom_error_response" {
-    for_each = [var.custom_error_response]
+    for_each = var.custom_error_response
 
     content {
       error_caching_min_ttl = lookup(custom_error_response.value, "error_caching_min_ttl", null)
