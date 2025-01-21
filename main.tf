@@ -19,11 +19,11 @@ locals {
   # Trusted public keys.
   # When setting encoded_key value, there needs a newline at the end of string. 
   # Otherwise, multiple runs of terraform will want to recreate the aws_cloudfront_public_key resource.
-  encoded_keys_formatted  = [for key in var.trusted_public_keys : "${trimspace(key.encoded_key)}\n"]
+  encoded_keys_formatted = [for key in var.trusted_public_keys : "${trimspace(key.encoded_key)}\n"]
   # Short hash of the encoded key - for part of the public key name and maybe comment.
   encoded_keys_short_hash = [for key in local.encoded_keys_formatted : substr(sha256(key), 0, 8)]
   # Filter out the keys that are associated. This is used to determine if the key group should be created.
-  associated_keys_count   = length([for key in var.trusted_public_keys : key if key.associate])
+  associated_keys_count = length([for key in var.trusted_public_keys : key if key.associate])
 }
 
 ########################
@@ -67,7 +67,7 @@ resource "aws_cloudfront_public_key" "this" {
 resource "aws_cloudfront_key_group" "this" {
   count = local.associated_keys_count > 0 ? 1 : 0
 
-  name  = "${var.application}-${var.namespace}-key-group"
+  name = "${var.application}-${var.namespace}-key-group"
   # Get the ids of aws_cloudfront_public_key.this where the referenced key has `associate = true`.
   # Using the machanism of associated should mean that we can disasociate a key from the key group by setting associate to false.
   # This should prevent an error like `The Cloudfront public key is currently associated with either Key Group`
@@ -133,12 +133,23 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   viewer_certificate {
-     # If no aliases and using a CloudFront domain - use CloudFront's certificate rather than using a custom domain and ACM
+    # If no aliases and using a CloudFront domain - use CloudFront's certificate rather than using a custom domain and ACM
     cloudfront_default_certificate = var.aliases_cert_arn == null
 
     # If using aliases - use ACM certificate and SNI-only SSL support method.
     acm_certificate_arn = var.aliases_cert_arn
     ssl_support_method  = var.aliases_cert_arn != null ? "sni-only" : null
+  }
+
+  dynamic "custom_error_response" {
+    for_each = var.custom_error_response
+
+    content {
+      error_caching_min_ttl = lookup(custom_error_response.value, "error_caching_min_ttl", null)
+      error_code            = lookup(custom_error_response.value, "error_code", null)
+      response_code         = lookup(custom_error_response.value, "response_code", null)
+      response_page_path    = lookup(custom_error_response.value, "response_page_path", null)
+    }
   }
 
 }
