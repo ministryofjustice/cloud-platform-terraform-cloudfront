@@ -70,6 +70,7 @@ No modules.
 | <a name="input_bucket_domain_name"></a> [bucket\_domain\_name](#input\_bucket\_domain\_name) | S3 bucket domain name to serve content from | `string` | n/a | yes |
 | <a name="input_bucket_id"></a> [bucket\_id](#input\_bucket\_id) | S3 bucket ID to serve content from (used to automatically create the appropriate policy) | `string` | n/a | yes |
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Area of the MOJ responsible for the service | `string` | n/a | yes |
+| <a name="input_custom_error_response"></a> [custom\_error\_response](#input\_custom\_error\_response) | One or more custom error response elements | `list(any)` | `[]` | no |
 | <a name="input_default_cache_behavior"></a> [default\_cache\_behavior](#input\_default\_cache\_behavior) | Default cache behaviour | `map(any)` | `{}` | no |
 | <a name="input_default_root_object"></a> [default\_root\_object](#input\_default\_root\_object) | Object that you want CloudFront to return (for example, index.html) when an end user requests the root URL. | `string` | `null` | no |
 | <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | Environment name | `string` | n/a | yes |
@@ -81,7 +82,7 @@ No modules.
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
-| <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment. | <pre>list(object({<br>    encoded_key = string<br>    comment     = string<br>    associate   = bool<br>  }))</pre> | `[]` | no |
+| <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment. | <pre>list(object({<br/>    encoded_key = string<br/>    comment     = string<br/>    associate   = bool<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
