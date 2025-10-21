@@ -75,6 +75,12 @@ variable "custom_error_response" {
   default     = []
 }
 
+variable "opt_in_xsiam_logging" {
+  description = "If set to true, it will send cloudfront logs to an S3 bucket and send them to Cortex XSIAM."
+  type        = bool
+  default     = false
+}
+
 ########
 # Tags #
 ########

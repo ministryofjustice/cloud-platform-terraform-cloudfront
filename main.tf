@@ -132,6 +132,17 @@ resource "aws_cloudfront_distribution" "this" {
     }
   }
 
+  dynamic "cortex_logging" {
+    for_each = var.opt_in_xsiam_logging ? [1] : []
+    content {
+      logging_config {
+        include_cookies = false
+        bucket          = "cloud-platform-0826f888206ae5793fc4b8f60322f860"
+        prefix          = "${local.target_origin_id}"
+      }
+    }
+  }
+
   viewer_certificate {
     # If no aliases and using a CloudFront domain - use CloudFront's certificate rather than using a custom domain and ACM
     cloudfront_default_certificate = var.aliases_cert_arn == null
