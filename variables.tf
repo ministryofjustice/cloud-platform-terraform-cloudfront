@@ -83,6 +83,7 @@ variable "opt_in_xsiam_logging" {
 
 variable "logging_bucket_domain_name" {
   type        = string
+  default     = ""
 }
 
 ########
