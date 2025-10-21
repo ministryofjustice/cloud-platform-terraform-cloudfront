@@ -132,14 +132,12 @@ resource "aws_cloudfront_distribution" "this" {
     }
   }
 
-  dynamic "cortex_logging" {
+  dynamic "logging_config" {
     for_each = var.opt_in_xsiam_logging ? [1] : []
     content {
-      logging_config {
-        include_cookies = false
-        bucket          = "cloud-platform-0826f888206ae5793fc4b8f60322f860"
-        prefix          = "${local.target_origin_id}"
-      }
+      include_cookies = false
+      bucket          = "cloud-platform-0826f888206ae5793fc4b8f60322f860"
+      prefix          = "${local.target_origin_id}"
     }
   }
 
