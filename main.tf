@@ -16,6 +16,9 @@ locals {
     infrastructure-support = var.infrastructure_support
   }
 
+  # Cortex XSIAM bucket to consume logs
+  cortex_log_bucket = "cloud-platform-cloudfront-cortex-logs-bucket.s3.eu-west-2.amazonaws.com"
+
   # Trusted public keys.
   # When setting encoded_key value, there needs a newline at the end of string. 
   # Otherwise, multiple runs of terraform will want to recreate the aws_cloudfront_public_key resource.
@@ -136,8 +139,8 @@ resource "aws_cloudfront_distribution" "this" {
     for_each = var.opt_in_xsiam_logging ? [1] : []
     content {
       include_cookies = false
-      bucket          = "${var.logging_bucket_domain_name}"
-      prefix          = "${local.target_origin_id}"
+      bucket          = "${local.cortex_log_bucket}"
+      prefix          = "${var.namespace}"
     }
   }
 
