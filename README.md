@@ -79,6 +79,7 @@ No modules.
 | <a name="input_ip_allow_listing_environment"></a> [ip\_allow\_listing\_environment](#input\_ip\_allow\_listing\_environment) | [Prisoner Content Hub only]: specify the environment name to restrict CloudFront to a preset IP allow-list, either `development`, `staging`, `production`. Leave empty for unrestricted access. | `string` | `null` | no |
 | <a name="input_is_production"></a> [is\_production](#input\_is\_production) | Whether this is used for production or not | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
+| <a name="input_opt_in_xsiam_logging"></a> [opt\_in\_xsiam\_logging](#input\_opt\_in\_xsiam\_logging) | If set to true, it will send cloudfront logs to an S3 bucket and send them to Cortex XSIAM. | `bool` | `false` | no |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
