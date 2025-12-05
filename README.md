@@ -90,6 +90,7 @@ No modules.
 | <a name="input_custom_error_response"></a> [custom\_error\_response](#input\_custom\_error\_response) | One or more custom error response elements | `list(any)` | `[]` | no |
 | <a name="input_default_cache_behavior"></a> [default\_cache\_behavior](#input\_default\_cache\_behavior) | Default cache behaviour | `map(any)` | `{}` | no |
 | <a name="input_default_root_object"></a> [default\_root\_object](#input\_default\_root\_object) | Object that you want CloudFront to return (for example, index.html) when an end user requests the root URL. | `string` | `null` | no |
+| <a name="input_enable_ordered_cache_behavior"></a> [enable\_ordered\_cache\_behavior](#input\_enable\_ordered\_cache\_behavior) | Whether to enable ordered cache behavior | `bool` | `false` | no |
 | <a name="input_environment_name"></a> [environment\_name](#input\_environment\_name) | Environment name | `string` | n/a | yes |
 | <a name="input_geo_restriction"></a> [geo\_restriction](#input\_geo\_restriction) | Geographical restrictions | `map(any)` | `{}` | no |
 | <a name="input_infrastructure_support"></a> [infrastructure\_support](#input\_infrastructure\_support) | The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>) | `string` | n/a | yes |
@@ -97,10 +98,10 @@ No modules.
 | <a name="input_is_production"></a> [is\_production](#input\_is\_production) | Whether this is used for production or not | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_opt_in_xsiam_logging"></a> [opt\_in\_xsiam\_logging](#input\_opt\_in\_xsiam\_logging) | If set to true, it will send cloudfront logs to an S3 bucket and send them to Cortex XSIAM. | `bool` | `false` | no |
-| <a name="input_ordered_cache_behaviors"></a> [ordered\_cache\_behaviors](#input\_ordered\_cache\_behaviors) | One or more ordered cache behavior elements | `list(any)` | `[]` | no |
+| <a name="input_ordered_cache_behavior"></a> [ordered\_cache\_behavior](#input\_ordered\_cache\_behavior) | Ordered cache behavior configuration. Must include path\_pattern. Optional: allowed\_methods, cached\_methods, compress, default\_ttl, max\_ttl, min\_ttl, cache\_policy\_id, response\_headers\_policy\_id | `map(any)` | `{}` | no |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
-| <a name="input_service_area"></a> [service\_area](#input\_service\_area) | Service area | `string` | n/a | yes |
+| <a name="input_service_area"></a> [service\_area](#input\_service\_area) | The MOJ service area this application supports | `string` | n/a | yes |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
 | <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment. | <pre>list(object({<br/>    encoded_key = string<br/>    comment     = string<br/>    associate   = bool<br/>  }))</pre> | `[]` | no |
 
