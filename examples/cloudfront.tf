@@ -11,9 +11,10 @@ module "s3" {
   infrastructure_support = var.infrastructure_support
 }
 
+# CloudFront Distribution with ordered_cache_behaviors
 module "cloudfront" {
   # source = "github.com/ministryofjustice/cloud-platform-terraform-cloudfront?ref=version" # use the latest release
-  source = "../" # use the latest release
+  source = "../"
 
   # Configuration
   bucket_id          = module.s3.bucket_name
@@ -27,4 +28,14 @@ module "cloudfront" {
   namespace              = var.namespace
   environment_name       = var.environment
   infrastructure_support = var.infrastructure_support
+  service_area           = var.service_area
+
+  # Ordered cache behaviors (optional)
+  enable_ordered_cache_behavior = true # Default is false
+
+  ordered_cache_behavior = {
+    path_pattern = "/images/*"
+    # Optional parameters
+    # cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
+  }
 }

@@ -22,10 +22,27 @@ module "cloudfront" {
   namespace              = var.namespace
   environment_name       = var.environment
   infrastructure_support = var.infrastructure_support
+  service_area           = var.service_area
+
+  # Ordered cache behaviors (optional)
+  enable_ordered_cache_behavior = true # Default is false
+
+  ordered_cache_behavior = {
+    path_pattern = "/images/*"
+    # Optional parameters
+    # cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
+  }
 }
 ```
-
 See the [examples/](examples/) folder for more information.
+
+
+cache policy id can be changed to match your requirements. Here is the documentation on [CloudFront cache policies](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/controlling-the-cache.html#cache-policy-overview).
+
+- [Main Cache Policy Documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/controlling-the-cache-key.html)
+- [Using Managed Cache Policies](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html)
+- [List of AWS Managed Cache Policies (with IDs)](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html#managed-cache-policies-list)
+- [Creating Custom Cache Policies](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cache-key-create-cache-policy.html)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -80,8 +97,10 @@ No modules.
 | <a name="input_is_production"></a> [is\_production](#input\_is\_production) | Whether this is used for production or not | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_opt_in_xsiam_logging"></a> [opt\_in\_xsiam\_logging](#input\_opt\_in\_xsiam\_logging) | If set to true, it will send cloudfront logs to an S3 bucket and send them to Cortex XSIAM. | `bool` | `false` | no |
+| <a name="input_ordered_cache_behaviors"></a> [ordered\_cache\_behaviors](#input\_ordered\_cache\_behaviors) | One or more ordered cache behavior elements | `list(any)` | `[]` | no |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
+| <a name="input_service_area"></a> [service\_area](#input\_service\_area) | Service area | `string` | n/a | yes |
 | <a name="input_team_name"></a> [team\_name](#input\_team\_name) | Team name | `string` | n/a | yes |
 | <a name="input_trusted_public_keys"></a> [trusted\_public\_keys](#input\_trusted\_public\_keys) | Public key in PEM format. Including --- BEGIN PUBLIC KEY --- and --- END PUBLIC KEY ---. Optional comment. | <pre>list(object({<br/>    encoded_key = string<br/>    comment     = string<br/>    associate   = bool<br/>  }))</pre> | `[]` | no |
 

@@ -9,7 +9,8 @@ locals {
     application   = var.application
     is-production = var.is_production
     owner         = var.team_name
-    namespace     = var.namespace # for billing and identification purposes
+    namespace     = var.namespace
+    service-area  = var.service_area # for billing and identification purposes
 
     # Optional
     environment-name       = var.environment_name
@@ -107,6 +108,25 @@ resource "aws_cloudfront_distribution" "this" {
       viewer_protocol_policy     = "redirect-to-https"                                                                                        # Enforce redirecting HTTP to HTTPS
       cache_policy_id            = lookup(default_cache_behavior.value, "cache_policy_id", "658327ea-f89d-4fab-a63d-7e88639e58f6")            # 658327ea-f89d-4fab-a63d-7e88639e58f6 is "CachingOptimized"
       response_headers_policy_id = lookup(default_cache_behavior.value, "response_headers_policy_id", "67f7725c-6f97-4210-82d7-5512b31e9d03") # 67f7725c-6f97-4210-82d7-5512b31e9d03 is "Managed-SecurityHeadersPolicy"
+      trusted_key_groups         = local.associated_keys_count > 0 ? [aws_cloudfront_key_group.this[0].id] : null
+    }
+  }
+
+  dynamic "ordered_cache_behavior" {
+    for_each = var.enable_ordered_cache_behavior ? [var.ordered_cache_behavior] : []
+
+    content {
+      path_pattern               = try(ordered_cache_behavior.value.path_pattern, ordered_cache_behavior.value["path_pattern"])
+      allowed_methods            = try(ordered_cache_behavior.value.allowed_methods, ["GET", "HEAD", "OPTIONS"])
+      cached_methods             = try(ordered_cache_behavior.value.cached_methods, ["GET", "HEAD"])
+      compress                   = try(ordered_cache_behavior.value.compress, true)
+      default_ttl                = try(ordered_cache_behavior.value.default_ttl, 0)
+      max_ttl                    = try(ordered_cache_behavior.value.max_ttl, 0)
+      min_ttl                    = try(ordered_cache_behavior.value.min_ttl, 0)
+      target_origin_id           = local.target_origin_id
+      viewer_protocol_policy     = "redirect-to-https"
+      cache_policy_id            = try(ordered_cache_behavior.value.cache_policy_id, "658327ea-f89d-4fab-a63d-7e88639e58f6")
+      response_headers_policy_id = try(ordered_cache_behavior.value.response_headers_policy_id, "67f7725c-6f97-4210-82d7-5512b31e9d03")
       trusted_key_groups         = local.associated_keys_count > 0 ? [aws_cloudfront_key_group.this[0].id] : null
     }
   }
