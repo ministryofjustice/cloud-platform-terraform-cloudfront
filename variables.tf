@@ -39,9 +39,21 @@ variable "default_root_object" {
   default     = null
 }
 
+variable "enable_ordered_cache_behavior" {
+  type        = bool
+  description = "Whether to enable ordered cache behavior"
+  default     = false
+}
+
 variable "default_cache_behavior" {
   type        = map(any)
   description = "Default cache behaviour"
+  default     = {}
+}
+
+variable "ordered_cache_behavior" {
+  type        = map(any)
+  description = "Ordered cache behavior configuration. Must include path_pattern. Optional: allowed_methods, cached_methods, compress, default_ttl, max_ttl, min_ttl, cache_policy_id, response_headers_policy_id"
   default     = {}
 }
 
@@ -116,5 +128,10 @@ variable "environment_name" {
 
 variable "infrastructure_support" {
   description = "The team responsible for managing the infrastructure. Should be of the form <team-name> (<team-email>)"
+  type        = string
+}
+
+variable "service_area" {
+  description = "The MOJ service area this application supports"
   type        = string
 }

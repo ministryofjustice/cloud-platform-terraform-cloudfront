@@ -25,3 +25,7 @@ variable "environment" {
 variable "infrastructure_support" {
   default = "Cloud Platform"
 }
+
+variable "service_area" {
+  default = "Hosting"
+}
