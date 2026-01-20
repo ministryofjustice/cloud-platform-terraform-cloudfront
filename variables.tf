@@ -93,6 +93,12 @@ variable "opt_in_xsiam_logging" {
   default     = false
 }
 
+variable "attach_bucket_policy" {
+  type    = bool
+  default = true
+}
+
+
 ########
 # Tags #
 ########
