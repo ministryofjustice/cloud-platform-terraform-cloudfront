@@ -84,6 +84,7 @@ No modules.
 | <a name="input_aliases"></a> [aliases](#input\_aliases) | Extra CNAMEs (alternate domain names), if any, for this distribution. | `list(string)` | `[]` | no |
 | <a name="input_aliases_cert_arn"></a> [aliases\_cert\_arn](#input\_aliases\_cert\_arn) | ACM certificate ARN for the aliases | `string` | `null` | no |
 | <a name="input_application"></a> [application](#input\_application) | Application name | `string` | n/a | yes |
+| <a name="input_attach_bucket_policy"></a> [attach\_bucket\_policy](#input\_attach\_bucket\_policy) | n/a | `bool` | `true` | no |
 | <a name="input_bucket_domain_name"></a> [bucket\_domain\_name](#input\_bucket\_domain\_name) | S3 bucket domain name to serve content from | `string` | n/a | yes |
 | <a name="input_bucket_id"></a> [bucket\_id](#input\_bucket\_id) | S3 bucket ID to serve content from (used to automatically create the appropriate policy) | `string` | n/a | yes |
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Area of the MOJ responsible for the service | `string` | n/a | yes |

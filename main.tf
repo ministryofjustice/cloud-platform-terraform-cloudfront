@@ -159,8 +159,8 @@ resource "aws_cloudfront_distribution" "this" {
     for_each = var.opt_in_xsiam_logging ? [1] : []
     content {
       include_cookies = false
-      bucket          = "${local.cortex_log_bucket}"
-      prefix          = "${var.namespace}"
+      bucket          = local.cortex_log_bucket
+      prefix          = var.namespace
     }
   }
 
@@ -230,6 +230,7 @@ data "aws_iam_policy_document" "bucket_policy" {
 }
 
 resource "aws_s3_bucket_policy" "this" {
+  count  = var.attach_bucket_policy ? 1 : 0
   bucket = var.bucket_id
   policy = data.aws_iam_policy_document.bucket_policy.json
 }
