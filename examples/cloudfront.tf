@@ -38,4 +38,17 @@ module "cloudfront" {
     # Optional parameters
     # cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
   }
+
+  # Default cache behavior (optional) - mixes list, bool and number values
+  default_cache_behavior = {
+    allowed_methods = ["GET", "HEAD", "OPTIONS"]
+    compress        = true
+    min_ttl         = 0
+  }
+
+  # Geographical restrictions (optional)
+  geo_restriction = {
+    restriction_type = "whitelist"
+    locations        = ["GB", "IE"]
+  }
 }

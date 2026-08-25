@@ -46,7 +46,7 @@ variable "enable_ordered_cache_behavior" {
 }
 
 variable "default_cache_behavior" {
-  type        = map(any)
+  type        = any
   description = "Default cache behaviour"
   default     = {}
 }
@@ -58,7 +58,7 @@ variable "ordered_cache_behavior" {
 }
 
 variable "geo_restriction" {
-  type        = map(any)
+  type        = any
   description = "Geographical restrictions"
   default     = {}
 }
