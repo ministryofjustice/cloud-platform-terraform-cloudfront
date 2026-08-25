@@ -28,6 +28,16 @@ locals {
   encoded_keys_short_hash = [for key in local.encoded_keys_formatted : substr(sha256(key), 0, 8)]
   # Filter out the keys that are associated. This is used to determine if the key group should be created.
   associated_keys_count = length([for key in var.trusted_public_keys : key if key.associate])
+
+  # Ordered cache behaviours, in precedence order.
+  # Either a single behaviour or a list of them is accepted. flatten() recurses into lists but leaves
+  # maps alone, so both shapes normalise to a list without needing to detect which was given.
+  # The enable_ordered_cache_behavior gate is a filter rather than a conditional: the branches of a
+  # conditional must unify to one type, which fails once behaviours differ in their attributes.
+  ordered_cache_behaviors = [
+    for behavior in flatten([var.ordered_cache_behavior]) : behavior
+    if var.enable_ordered_cache_behavior
+  ]
 }
 
 ########################
@@ -113,10 +123,10 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   dynamic "ordered_cache_behavior" {
-    for_each = var.enable_ordered_cache_behavior ? [var.ordered_cache_behavior] : []
+    for_each = local.ordered_cache_behaviors
 
     content {
-      path_pattern               = try(ordered_cache_behavior.value.path_pattern, ordered_cache_behavior.value["path_pattern"])
+      path_pattern               = ordered_cache_behavior.value.path_pattern
       allowed_methods            = try(ordered_cache_behavior.value.allowed_methods, ["GET", "HEAD", "OPTIONS"])
       cached_methods             = try(ordered_cache_behavior.value.cached_methods, ["GET", "HEAD"])
       compress                   = try(ordered_cache_behavior.value.compress, true)

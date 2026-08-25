@@ -33,9 +33,19 @@ module "cloudfront" {
   # Ordered cache behaviors (optional)
   enable_ordered_cache_behavior = true # Default is false
 
-  ordered_cache_behavior = {
-    path_pattern = "/images/*"
-    # Optional parameters
-    # cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
-  }
+  # A list is evaluated in precedence order - the first matching path_pattern wins.
+  # A single object (rather than a list) is also accepted, for a single behavior.
+  ordered_cache_behavior = [
+    {
+      path_pattern = "/images/*"
+      # Optional parameters
+      # cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
+    },
+    {
+      path_pattern    = "/api/*"
+      allowed_methods = ["GET", "HEAD", "OPTIONS"]
+      compress        = false
+      cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
+    },
+  ]
 }

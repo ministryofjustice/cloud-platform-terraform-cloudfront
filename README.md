@@ -27,11 +27,21 @@ module "cloudfront" {
   # Ordered cache behaviors (optional)
   enable_ordered_cache_behavior = true # Default is false
 
-  ordered_cache_behavior = {
-    path_pattern = "/images/*"
-    # Optional parameters
-    # cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
-  }
+  # A list is evaluated in precedence order - the first matching path_pattern wins.
+  # A single object (rather than a list) is also accepted, for a single behavior.
+  ordered_cache_behavior = [
+    {
+      path_pattern = "/images/*"
+      # Optional parameters
+      # cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
+    },
+    {
+      path_pattern    = "/api/*"
+      allowed_methods = ["GET", "HEAD", "OPTIONS"]
+      compress        = false
+      cache_policy_id = "4135ea2d-6df8-44a3-9df3-4b5a84be39ad" ### CachingDisabled
+    },
+  ]
 }
 ```
 See the [examples/](examples/) folder for more information.
@@ -99,7 +109,7 @@ No modules.
 | <a name="input_is_production"></a> [is\_production](#input\_is\_production) | Whether this is used for production or not | `string` | n/a | yes |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | Namespace name | `string` | n/a | yes |
 | <a name="input_opt_in_xsiam_logging"></a> [opt\_in\_xsiam\_logging](#input\_opt\_in\_xsiam\_logging) | If set to true, it will send cloudfront logs to an S3 bucket and send them to Cortex XSIAM. | `bool` | `false` | no |
-| <a name="input_ordered_cache_behavior"></a> [ordered\_cache\_behavior](#input\_ordered\_cache\_behavior) | Ordered cache behavior configuration. Must include path\_pattern. Optional: allowed\_methods, cached\_methods, compress, default\_ttl, max\_ttl, min\_ttl, cache\_policy\_id, response\_headers\_policy\_id | `map(any)` | `{}` | no |
+| <a name="input_ordered_cache_behavior"></a> [ordered\_cache\_behavior](#input\_ordered\_cache\_behavior) | Ordered cache behavior configuration, either a single object or a list of them in precedence order. Each must include path\_pattern. Optional: allowed\_methods, cached\_methods, compress, default\_ttl, max\_ttl, min\_ttl, cache\_policy\_id, response\_headers\_policy\_id | `any` | `{}` | no |
 | <a name="input_origin"></a> [origin](#input\_origin) | Origin configuration (origin.connection\_attempts, origin.connection\_timeout) | `map(any)` | `{}` | no |
 | <a name="input_price_class"></a> [price\_class](#input\_price\_class) | Price Class to use | `string` | `"PriceClass_All"` | no |
 | <a name="input_service_area"></a> [service\_area](#input\_service\_area) | The MOJ service area this application supports | `string` | n/a | yes |

@@ -52,8 +52,8 @@ variable "default_cache_behavior" {
 }
 
 variable "ordered_cache_behavior" {
-  type        = map(any)
-  description = "Ordered cache behavior configuration. Must include path_pattern. Optional: allowed_methods, cached_methods, compress, default_ttl, max_ttl, min_ttl, cache_policy_id, response_headers_policy_id"
+  type        = any
+  description = "Ordered cache behavior configuration, either a single object or a list of them in precedence order. Each must include path_pattern. Optional: allowed_methods, cached_methods, compress, default_ttl, max_ttl, min_ttl, cache_policy_id, response_headers_policy_id"
   default     = {}
 }
 
